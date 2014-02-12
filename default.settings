@@ -1,0 +1,26 @@
+{
+  "name": "Flutterman Sample",
+  "package": "com.defrac.sample",
+  "identifier": "flutterman",
+  "main": "com.defrac.sample.flutterman.FluttermanApp",
+  "version": "1.0",
+  "targets": [
+    "android",
+    "web",
+    "jvm"
+  ],
+  "debug": "true",
+  "web": {
+    "webp": {
+      "quality": "100",
+      "arguments": "-lossless"
+    },
+    "strictMode": "false",
+    "debug": "false"
+  },
+  "jvm": {
+    "width": 1344,
+    "height": 756
+  },
+  "android": {"name": "Flutterman"}
+}
