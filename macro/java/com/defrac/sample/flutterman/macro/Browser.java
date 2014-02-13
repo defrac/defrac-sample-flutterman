@@ -6,9 +6,6 @@ import defrac.compiler.macro.MethodBody;
 
 import javax.annotation.Nonnull;
 
-/**
- *
- */
 public final class Browser extends Macro {
   public Browser(@Nonnull Context context) {
     super(context);
