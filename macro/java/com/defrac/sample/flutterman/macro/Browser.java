@@ -23,14 +23,7 @@ public final class Browser extends Macro {
     // The actual implementation can be found in the Java code for
     // the individual platforms.
     return MethodBody(
-        Return(
-            MethodCall(
-                MemberAccess(
-                    ClassTypeReference("com.defrac.sample.flutterman.Browser"),
-                    "openWebsite"
-                )
-            )
-        )
+        Return(StaticCall("com.defrac.sample.flutterman.Browser", "openWebsite"))
     );
   }
 }
