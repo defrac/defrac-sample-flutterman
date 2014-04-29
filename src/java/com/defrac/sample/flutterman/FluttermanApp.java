@@ -54,6 +54,10 @@ public final class FluttermanApp extends GenericApp {
 
   @Override
   protected void onResize(final float width, final float height) {
+    if(null == game) {
+      return;
+    }
+
     game.resizeTo(width, height);
   }
 }
