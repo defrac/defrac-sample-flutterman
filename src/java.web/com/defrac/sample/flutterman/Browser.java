@@ -1,6 +1,6 @@
 package com.defrac.sample.flutterman;
 
-import intrinsic.Toplevel;
+import defrac.web.Toplevel;
 
 /**
  *
