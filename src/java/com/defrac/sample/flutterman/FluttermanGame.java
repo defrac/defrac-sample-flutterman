@@ -9,10 +9,10 @@ import defrac.annotation.MacroWeb;
 import defrac.display.*;
 import defrac.display.event.*;
 import defrac.event.EnterFrameEvent;
+import defrac.event.EventListener;
 import defrac.event.Events;
 import defrac.geom.Point;
 import defrac.geom.Rectangle;
-import defrac.lang.Procedure;
 
 import javax.annotation.Nonnull;
 
@@ -146,9 +146,9 @@ public final class FluttermanGame {
     }
 
     // On each frame, we want to update the game
-    Events.onEnterFrame.attach(new Procedure<EnterFrameEvent>() {
+    Events.onEnterFrame.add(new EventListener<EnterFrameEvent>() {
       @Override
-      public void apply(EnterFrameEvent enterFrameEvent) {
+      public void onEvent(EnterFrameEvent enterFrameEvent) {
         tick();
       }
     });
