@@ -3,7 +3,6 @@ package com.defrac.sample.flutterman;
 import com.defrac.sample.flutterman.visual.*;
 import com.defrac.sample.flutterman.world.*;
 import defrac.annotation.MacroA5D;
-import defrac.annotation.MacroCPP;
 import defrac.annotation.MacroJVM;
 import defrac.annotation.MacroWeb;
 import defrac.display.*;
@@ -201,8 +200,7 @@ public final class FluttermanGame {
   @MacroJVM("com.defrac.sample.flutterman.macro.Browser.openWebsite")
   @MacroWeb("com.defrac.sample.flutterman.macro.Browser.openWebsite")
   @MacroA5D("com.defrac.sample.flutterman.macro.Browser.openWebsite")
-  @MacroCPP("com.defrac.sample.flutterman.macro.ios.Browser.openWebsite")
-  private static native boolean openWebsite();
+  private static boolean openWebsite() { return false; }
 
   @Nonnull
   private static TileSlice createSlices(@Nonnull final DisplayObjectContainer container,
