@@ -23,6 +23,11 @@
     "width": 1344,
     "height": 756
   },
-  "android": {"name": "Flutterman"},
-  "ios": {"name": "Flutterman"}
+  "android": {
+    "name": "Flutterman",
+    "icon": "@drawable/ic_launcher"
+  },
+  "ios": {
+    "name": "Flutterman"
+  }
 }
