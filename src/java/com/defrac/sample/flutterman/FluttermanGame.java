@@ -1,10 +1,8 @@
 package com.defrac.sample.flutterman;
 
+import com.defrac.sample.flutterman.util.BrowserUtil;
 import com.defrac.sample.flutterman.visual.*;
 import com.defrac.sample.flutterman.world.*;
-import defrac.annotation.MacroA5D;
-import defrac.annotation.MacroJVM;
-import defrac.annotation.MacroWeb;
 import defrac.display.*;
 import defrac.display.event.*;
 import defrac.event.EnterFrameEvent;
@@ -173,8 +171,8 @@ public final class FluttermanGame {
                    pos.x >= defracX
                 && pos.x < (defracX + defracW)
                 && pos.y >= defracY
-                && pos.y < (defracY + defracH)  // ... if we made it here, the logo has been hit
-                && openWebsite();               // ... so let's call our macro
+                && pos.y < (defracY + defracH)                          // ... if we made it here, the logo has been hit
+                && BrowserUtil.openWebsite("https://www.defrac.com");   // ... so let's try opening the website
 
               if(!openWebsite) {
                 // User didn't/couldn't open the website, let's move into the
@@ -195,12 +193,6 @@ public final class FluttermanGame {
       }
     });
   }
-
-  // Macro to open http://www.defrac.com/ in a browser window
-  @MacroJVM("com.defrac.sample.flutterman.macro.Browser.openWebsite")
-  @MacroWeb("com.defrac.sample.flutterman.macro.Browser.openWebsite")
-  @MacroA5D("com.defrac.sample.flutterman.macro.Browser.openWebsite")
-  private static boolean openWebsite() { return false; }
 
   @Nonnull
   private static TileSlice createSlices(@Nonnull final DisplayObjectContainer container,
