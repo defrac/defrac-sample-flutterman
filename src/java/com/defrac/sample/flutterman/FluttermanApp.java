@@ -10,6 +10,7 @@ import defrac.resource.ResourceGroup;
 import defrac.resource.TextureDataResource;
 
 import javax.annotation.Nonnull;
+import java.lang.Override;
 import java.util.List;
 
 public final class FluttermanApp extends GenericApp {
@@ -25,6 +26,9 @@ public final class FluttermanApp extends GenericApp {
 
   @Override
   protected void onCreate() {
+    // Force landscape orientation
+    orientation(Orientation.LANDSCAPE);
+
     // Load a set of resources, but please: no smoothing
     final ResourceGroup<TextureData> resources = ResourceGroup.of(
         TextureDataResource.from(BACKGROUNDS_PNG, TextureDataFormat.RGBA, TextureDataRepeat.NO_REPEAT, TextureDataSmoothing.NO_SMOOTHING),
