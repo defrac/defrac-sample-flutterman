@@ -1,7 +1,6 @@
 {
   "name": "Flutterman Sample",
-  "package": "com.defrac.sample",
-  "identifier": "flutterman",
+  "package": "com.defrac.sample.flutterman",
   "main": "com.defrac.sample.flutterman.FluttermanApp",
   "version": "1.0",
   "targets": [
@@ -10,16 +9,19 @@
     "jvm",
     "ios"
   ],
-  "debug": "true",
+  "debug": "false",
   "web": {
     "webp": {
       "quality": "100",
       "arguments": "-lossless"
     },
     "strictMode": "false",
-    "debug": "false"
+    "debug": "true",
+    "sourceMap": "false",
+    "optimize": true
   },
   "jvm": {
+    "debug": true,
     "width": 1344,
     "height": 756
   },
@@ -29,5 +31,12 @@
   },
   "ios": {
     "name": "Flutterman"
+  },
+  "optimize": "1",
+  "developer": {
+    "symbol": "*.main",
+    "trace": [
+      "cfg"
+    ]
   }
 }
