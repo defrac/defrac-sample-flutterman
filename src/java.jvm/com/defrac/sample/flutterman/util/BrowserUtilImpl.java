@@ -1,10 +1,13 @@
 package com.defrac.sample.flutterman.util;
 
+import defrac.annotation.Delegator;
+
 import java.net.URI;
 
 /**
  *
  */
+@Delegator("com.defrac.sample.flutterman.util.BrowserUtil")
 public final class BrowserUtilImpl {
   public static boolean openWebsite(final String url) {
     try {
