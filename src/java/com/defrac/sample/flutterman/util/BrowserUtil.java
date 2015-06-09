@@ -1,11 +1,11 @@
 package com.defrac.sample.flutterman.util;
 
-import defrac.annotation.Delegate;
+import defrac.annotation.Inject;
 
 /**
  *
  */
-@Delegate("com.defrac.sample.flutterman.util.BrowserUtilImpl")
+@Inject("com.defrac.sample.flutterman.util.BrowserUtilImpl")
 public final class BrowserUtil {
   public static native boolean openWebsite(final String url);
 

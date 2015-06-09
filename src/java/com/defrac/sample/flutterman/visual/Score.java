@@ -32,9 +32,9 @@ public final class Score extends Layer {
         spritesheet.get(Sprites.DIGIT_9)
     };
 
-    digit0 = addChild(new Image(textures[0]));
-    digit1 = addChild(new Image(textures[0]));
-    digit2 = addChild(new Image(textures[0]));
+    addChild(digit0 = new Image(textures[0]));
+    addChild(digit1 = new Image(textures[0]));
+    addChild(digit2 = new Image(textures[0]));
   }
 
   @Nonnull

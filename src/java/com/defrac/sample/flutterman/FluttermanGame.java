@@ -5,9 +5,6 @@ import com.defrac.sample.flutterman.visual.*;
 import com.defrac.sample.flutterman.world.*;
 import defrac.display.*;
 import defrac.display.event.*;
-import defrac.event.EnterFrameEvent;
-import defrac.event.EventListener;
-import defrac.event.Events;
 import defrac.geom.Point;
 import defrac.geom.Rectangle;
 
@@ -43,7 +40,7 @@ public final class FluttermanGame {
   private final Hero hero;
 
   @Nonnull
-  private final DisplayObjectContainer container;
+  private final Stage stage;
   @Nonnull
   private final DisplayObjectContainer splashScreen;
 
@@ -75,61 +72,69 @@ public final class FluttermanGame {
   public FluttermanGame(@Nonnull final TextureData backgroundsData,
                         @Nonnull final TextureData spritesheetData,
                         @Nonnull final TextureData splashscreenData,
-                        @Nonnull final DisplayObjectContainer container) {
-    this.container = container;
+                        @Nonnull final Stage stage) {
+    this.stage = stage;
 
     spritesheet = new Spritesheet(spritesheetData);
     worldGenerator = new WorldGenerator();
 
     // Add the background first
-    background = container.addChild(new InfiniteBackground(backgroundsData));
+    stage.addChild(background = new InfiniteBackground(backgroundsData));
     // Then the tiles which will be used to display the world
-    slices = createSlices(container, spritesheet);
+    slices = createSlices(stage, spritesheet);
     // Add some space for effects
-    final DisplayObjectContainer effectLayer = container.addChild(new Layer(NUM_SPARKLES));
+    final DisplayObjectContainer effectLayer;
+    stage.addChild(effectLayer = new Layer(NUM_SPARKLES));
     // Then finally the hero
-    hero = container.addChild(new Hero(spritesheet));
+    stage.addChild(hero = new Hero(spritesheet));
 
     // The hearts are added on top of the hero
     if(HEARTS_ENABLED) {
-      final Layer heartLayer =
-          container.addChild(new Layer(NUM_HEARTS));
+      final Layer heartLayer;
+
+      stage.addChild(heartLayer = new Layer(NUM_HEARTS));
 
       for(int i = 0; i < NUM_HEARTS; ++i) {
-        hearts[i] = heartLayer.addChild(new HeartParticle(spritesheet));
+        final HeartParticle particle = new HeartParticle(spritesheet);
+        hearts[i] = particle;
         hearts[i].visible(false);
+        heartLayer.addChild(hearts[i]);
       }
     }
 
     // And the score always on top
-    score = container.addChild(new Score(spritesheet));
+    stage.addChild(score = new Score(spritesheet));
 
     // The splash screen is living on its own layer on top of everything else so far
-    splashScreen = container.addChild(new Layer(2));
-    splashImage = splashScreen.addChild(
-        new Image(
-            new Texture(
-                splashscreenData,
-                0.0f, 71.0f,
-                336.0f, 189.0f,
-                0,
-                0.0f, 71.0f,
-                336.0f, 118.0f)));
-    splashLogo = splashScreen.addChild(
-        new Image(
-            new Texture(
-                splashscreenData,
-                49.0f, 19.0f,
-                252.0f, 44.0f
+    stage.addChild(splashScreen = new Layer(2));
+    splashScreen.addChild(
+        splashImage =
+            new Image(
+                new Texture(
+                    splashscreenData,
+                    0.0f, 71.0f,
+                    336.0f, 189.0f,
+                    0,
+                    0.0f, 71.0f,
+                    336.0f, 118.0f)));
+    splashScreen.addChild(
+        splashLogo =
+            new Image(
+                new Texture(
+                    splashscreenData,
+                    49.0f, 19.0f,
+                    252.0f, 44.0f
+                )
             )
-        )
     );
 
 
     // Generate all the fireworks
     for(int i = 0; i < NUM_SPARKLES; ++i) {
-      fireworkParticles[i] = effectLayer.addChild(new FireworkParticle(spritesheet));
+      final FireworkParticle particle = new FireworkParticle(spritesheet);
+      fireworkParticles[i] = particle;
       fireworkParticles[i].visible(false);
+      effectLayer.addChild(particle);
     }
 
     // Start with the splash screen
@@ -143,16 +148,11 @@ public final class FluttermanGame {
     }
 
     // On each frame, we want to update the game
-    Events.onEnterFrame.add(new EventListener<EnterFrameEvent>() {
-      @Override
-      public void onEvent(EnterFrameEvent enterFrameEvent) {
-        tick();
-      }
-    });
+    stage.globalEvents().onEnterFrame.add(event -> tick());
 
     // For some very check user interaction, we simply attach ourselves to
     // the container and react on the events if the state is correct
-    container.addProcessHook(new UIProcessHook() {
+    stage.addProcessHook(new UIProcessHook() {
       @Override
       public void processEvent(@Nonnull UIEvent event) throws UIHookInterrupt {
         switch(event.type) {
@@ -164,15 +164,15 @@ public final class FluttermanGame {
               final float defracY = 65.0f * scale;
               final float defracW = 33.0f * scale;
               final float defracH = 10.0f * scale;
-              final Point pos = ((UIActionEvent)event).pos;
+              final Point pos = ((UIActionEvent) event).pos;
               final boolean openWebsite;
 
               openWebsite =
-                   pos.x >= defracX
-                && pos.x < (defracX + defracW)
-                && pos.y >= defracY
-                && pos.y < (defracY + defracH)                          // ... if we made it here, the logo has been hit
-                && BrowserUtil.openWebsite("https://www.defrac.com");   // ... so let's try opening the website
+                  pos.x >= defracX
+                      && pos.x < (defracX + defracW)
+                      && pos.y >= defracY
+                      && pos.y < (defracY + defracH)                          // ... if we made it here, the logo has been hit
+                      && BrowserUtil.openWebsite("https://www.defrac.com");   // ... so let's try opening the website
 
               if(!openWebsite) {
                 // User didn't/couldn't open the website, let's move into the
@@ -202,7 +202,8 @@ public final class FluttermanGame {
     int i = 0;
 
     do {
-      final TileSlice prev = container.addChild(new TileSlice(spritesheet));
+      final TileSlice prev = new TileSlice(spritesheet);
+      container.addChild(prev);
       prev.x(Constants.WIDTH * Spritesheet.TILE_WIDTH - i * Spritesheet.TILE_WIDTH);
       prev.next = next;
       next = prev;
@@ -310,7 +311,7 @@ public final class FluttermanGame {
 
         if(frame == 16) {
           // Kill the splash screen!
-          container.removeChild(splashScreen);
+          stage.removeChild(splashScreen);
           state = STATE_RUNNING;
         }
       }
@@ -508,7 +509,7 @@ public final class FluttermanGame {
     reset();
     state = STATE_SPLASH;
     background.render(frame * 0.25f * scrollSpeed);
-    container.addChild(splashScreen.alpha(1.0f));
+    stage.addChild(splashScreen.alpha(1.0f));
     hero.update();
   }
 

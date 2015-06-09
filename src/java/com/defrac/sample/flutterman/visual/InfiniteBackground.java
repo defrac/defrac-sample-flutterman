@@ -15,8 +15,8 @@ public final class InfiniteBackground extends Layer {
     super(2);
 
     final Texture texture = new Texture(textureData, 0, 0, 231, 63);
-    firstSlice = addChild(new Image(texture));
-    secondSlice = addChild(new Image(texture));
+    addChild(firstSlice = new Image(texture));
+    addChild(secondSlice = new Image(texture));
   }
 
   public void resizeTo(final float width, final float height) {

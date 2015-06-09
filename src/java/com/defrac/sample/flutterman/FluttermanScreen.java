@@ -1,33 +1,31 @@
 package com.defrac.sample.flutterman;
 
-import defrac.app.Bootstrap;
-import defrac.app.GenericApp;
-import defrac.display.TextureData;
-import defrac.display.TextureDataFormat;
-import defrac.display.TextureDataRepeat;
-import defrac.display.TextureDataSmoothing;
+import defrac.display.*;
 import defrac.resource.ResourceGroup;
 import defrac.resource.TextureDataResource;
+import defrac.ui.DisplayList;
+import defrac.ui.Screen;
 
 import javax.annotation.Nonnull;
-import java.lang.Override;
 import java.util.List;
 
-public final class FluttermanApp extends GenericApp {
+public final class FluttermanScreen extends Screen {
   private static final String BACKGROUNDS_PNG = "backgrounds.png";
   private static final String SPRITESHEET_PNG = "spritesheet.png";
   private static final String SPLASHSCREEN_PNG = "splash.png";
 
-  public static void main(final String[] args) {
-    Bootstrap.run(new FluttermanApp());
-  }
+  DisplayList displayList;
 
   FluttermanGame game;
 
   @Override
   protected void onCreate() {
-    // Force landscape orientation
-    orientation(Orientation.LANDSCAPE);
+    super.onCreate();
+
+    // Force landscape orientation (not part of defrac.ui.Screen yet)
+    //orientation(Orientation.LANDSCAPE);
+
+    displayList = new DisplayList();
 
     // Load a set of resources, but please: no smoothing
     final ResourceGroup<TextureData> resources = ResourceGroup.of(
@@ -42,26 +40,36 @@ public final class FluttermanApp extends GenericApp {
         final TextureData backgrounds  = content.get(0);
         final TextureData spritesheet  = content.get(1);
         final TextureData splashscreen = content.get(2);
-        createGame(backgrounds, spritesheet, splashscreen);
+
+        // Wait for the Stage and then create the Game
+        displayList.onStageReady(stage -> createGame(stage, backgrounds, spritesheet, splashscreen));
       }
     });
 
     resources.load();
-  }
 
-  private void createGame(@Nonnull final TextureData backgroundsData,
-                          @Nonnull final TextureData spritesheetData,
-                          @Nonnull final TextureData splashscreenData) {
-    game = new FluttermanGame(backgroundsData, spritesheetData, splashscreenData, stage());
-    game.resizeTo(width(), height());
+    rootView(displayList);
   }
 
   @Override
-  protected void onResize(final float width, final float height) {
-    if(null == game) {
-      return;
-    }
+  protected void onPause() {
+    super.onPause();
+    displayList.onPause();
+  }
 
-    game.resizeTo(width, height);
+  @Override
+  protected void onResume() {
+    super.onResume();
+    displayList.onResume();
+  }
+
+  private void createGame(@Nonnull final Stage stage,
+                          @Nonnull final TextureData backgroundsData,
+                          @Nonnull final TextureData spritesheetData,
+                          @Nonnull final TextureData splashscreenData) {
+    game = new FluttermanGame(backgroundsData, spritesheetData, splashscreenData, stage);
+    game.resizeTo(width(), height());
+
+    stage.globalEvents().onResize.add(event -> game.resizeTo(event.width, event.height));
   }
 }

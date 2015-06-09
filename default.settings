@@ -3,7 +3,7 @@
   "package": "com.defrac.sample.flutterman",
   "version": "1.0",
 
-  "main": "com.defrac.sample.flutterman.FluttermanApp",
+  "main": "com.defrac.sample.flutterman.Main",
 
   "targets": [
     "android",
@@ -25,9 +25,7 @@
   },
 
   "jvm": {
-    "debug": true,
-    "width": 1344,
-    "height": 756
+    "debug": true
   },
 
   "android": {

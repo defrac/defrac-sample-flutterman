@@ -38,9 +38,10 @@ public final class TileSlice extends Layer {
     images = new Image[Constants.HEIGHT];
 
     for(int i = 0; i < Constants.HEIGHT; ++i) {
-      final Image image = addChild(new Image());
+      final Image image = new Image();
       image.y(Math.round(i * Spritesheet.TILE_HEIGHT));
       images[i] = image;
+      addChild(image);
     }
   }
 
