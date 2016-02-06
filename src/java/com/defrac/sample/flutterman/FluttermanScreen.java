@@ -3,13 +3,14 @@ package com.defrac.sample.flutterman;
 import defrac.display.*;
 import defrac.resource.ResourceGroup;
 import defrac.resource.TextureDataResource;
+import defrac.ui.ContentScreen;
 import defrac.ui.DisplayList;
 import defrac.ui.Screen;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public final class FluttermanScreen extends Screen {
+public final class FluttermanScreen extends ContentScreen {
   private static final String BACKGROUNDS_PNG = "backgrounds.png";
   private static final String SPRITESHEET_PNG = "spritesheet.png";
   private static final String SPLASHSCREEN_PNG = "splash.png";
